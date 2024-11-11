@@ -12,7 +12,8 @@ outputs: {}
 runs:
   using: "composite"
 
-  env: COLUMNS=120
+  env:
+    COLUMNS: 120
 
   steps:
     - name: install dependencies

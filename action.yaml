@@ -16,6 +16,12 @@ runs:
       shell: bash -l {0}
       run: |
         python -m pip install -r requirements.txt
+    - name: show files
+      shell: bash -l {0}
+      run: |
+        pwd
+        ls -l
+        ls -l ${{ join(fromJSON(inputs.environment-paths), ' ') }}
     - name: analyze environments
       shell: bash -l {0}
       run: |

@@ -55,11 +55,19 @@ jobs:
         uses: ./
         with:
           environment-paths: "${{ toJSON(matrix.env-paths) }}"
-      - name: evaluate failures
+      - name: detect unexpected failures
         if: |
-          (
-            (failure() && ${{ matrix.expected-failure }} != "true")
-            || (success() && ${{ matrix.expected-failure }} != "false")
-          )
+          failure() && ${{ matrix.expected-failure }} == "false"
         shell: bash -l {0}
-        run: exit 1
+        run: |
+          echo "STATUS=1" >> $GITHUB_ENV
+      - name: detect unexpected passes
+        if: |
+          success() && ${{ matrix.expected-failure }} == "true"
+        shell: bash -l {0}
+        run: |
+          echo "STATUS=0" >> $GITHUB_ENV
+      - name: evaluate status
+        shell: bash -l {0}
+        run: |
+          exit ${{ env.STATUS }}

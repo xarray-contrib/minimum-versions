@@ -6,6 +6,7 @@ inputs:
     description: >-
       The paths to the environment files
     required: True
+    type: list
 outputs: {}
 
 runs:

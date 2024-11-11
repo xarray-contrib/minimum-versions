@@ -73,7 +73,7 @@ class Spec:
             version = Version(version_text)
             segments = version.segments()
 
-            if len(segments) != 2 or (len(segments) == 3 and segments[2] != 0):
+            if (len(segments) == 3 and segments[2] != [0]) or len(segments) > 3:
                 warnings.append(
                     f"package should be pinned to a minor version (got {version})"
                 )

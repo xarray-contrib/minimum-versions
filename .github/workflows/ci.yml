@@ -60,6 +60,7 @@ jobs:
       - name: run action
         uses: ./
         id: action-run
+        continue-on-error: true
         with:
           environment-paths: "${{ toJSON(matrix.env-paths) }}"
       - name: detect outcome

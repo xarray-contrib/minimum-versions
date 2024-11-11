@@ -41,10 +41,10 @@ jobs:
           - ["envs/env1.yaml"]
           - ["envs/env2.yaml"]
           - ["envs/env1.yaml", "envs/env2.yaml"]
-        expected-failure: false
+        expected-failure: "false"
         include:
           - env-paths: ["envs/failing-env1.yaml"]
-            expected-failure: true
+            expected-failure: "true"
 
     steps:
       - name: clone the repository
@@ -57,8 +57,8 @@ jobs:
         if: |
           always()
           && (
-            (failure() && ! ${{ matrix.expected-failure }})
-            || (success() && ${{ matrix.expected-failure }})
+            (failure() && ${{ matrix.expected-failure }} == "false")
+            || (success() && ${{ matrix.expected-failure }} == "true")
           )
         shell: bash -l {0}
         run: exit 1

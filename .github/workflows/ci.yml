@@ -45,6 +45,8 @@ jobs:
         include:
           - env-paths: ["envs/failing-env1.yaml"]
             expected-failure: "true"
+          - env-paths: ["envs/env1.yaml", "envs/failing-env1.yaml"]
+            expected-failure: "true"
 
     steps:
       - name: clone the repository

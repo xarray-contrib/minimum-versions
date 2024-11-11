@@ -11,6 +11,9 @@ outputs: {}
 
 runs:
   using: "composite"
+
+  env: COLUMNS=120
+
   steps:
     - name: install dependencies
       shell: bash -l {0}

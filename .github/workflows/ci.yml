@@ -79,7 +79,7 @@ jobs:
               # normal pass
               echo "workflow passed"
               export STATUS=0
-          elif [[ "${{ steps.action-run.outcome }}" == "success" && ${{ matrix.expected-failure }} == "true" ]]; then
+          elif [[ "${{ steps.action-run.outcome }}" == "failure" && ${{ matrix.expected-failure }} == "true" ]]; then
               # normal pass
               echo "workflow xfailed"
               export STATUS=0

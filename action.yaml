@@ -12,9 +12,6 @@ outputs: {}
 runs:
   using: "composite"
 
-  env:
-    COLUMNS: 120
-
   steps:
     - name: install dependencies
       shell: bash -l {0}
@@ -30,5 +27,7 @@ runs:
         ls -l ${{ join(fromJSON(inputs.environment-paths), ' ') }}
     - name: analyze environments
       shell: bash -l {0}
+      env:
+        COLUMNS: 120
       run: |
         python minimum_versions.py ${{ join(fromJSON(inputs.environment-paths), ' ') }}

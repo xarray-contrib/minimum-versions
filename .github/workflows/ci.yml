@@ -1,0 +1,51 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: tests
+    runs-on: [ubuntu-latest]
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: clone the repository
+        uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ matrix.python-version }}"
+      - name: upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+      - name: install dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install pytest
+      - name: run tests
+        run: |
+          python -m pytest -rf
+
+  e2e:
+    name: end-to-end
+    runs-on: [ubuntu-latest]
+
+    strategy:
+      matrix:
+        env-paths:
+          - ["envs/env1.yaml"]
+          - ["envs/env2.yaml"]
+          - ["envs/env1.yaml", "envs/env2.yaml"]
+
+    steps:
+      - name: clone the repository
+        uses: actions/checkout@v4
+      - name: run action
+        uses: ./
+        with:
+          environment-paths: ${{ matrix.env-paths }}

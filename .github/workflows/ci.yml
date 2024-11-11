@@ -68,20 +68,24 @@ jobs:
         shell: bash -l {0}
         run: |
           if [[ "${{ steps.action-run.outcome }}" == "success" && ${{ matrix.expected-failure }} == "true" ]]; then
-              # unexpected failure
-              echo "workflow xpassed"
-              echo "STATUS=1" >> $GITHUB_ENV
-          elif [[ "${{ steps.action-run.outcome }}" == "failure" && ${{ matrix.expected-failure }} == "false" ]]; then
               # unexpected pass
+              echo "workflow xpassed"
+              export STATUS=1
+          elif [[ "${{ steps.action-run.outcome }}" == "failure" && ${{ matrix.expected-failure }} == "false" ]]; then
+              # unexpected failure
               echo "workflow failed"
-              echo "STATUS=2" >> $GITHUB_ENV
-          elif [[ "${{ steps.action-run.outcome }}" == "success" ]]; then
+              export STATUS=2
+          elif [[ "${{ steps.action-run.outcome }}" == "success" && ${{ matrix.expected-failure }} == "false" ]]; then
               # normal pass
-              echo "passed"
-              echo "STATUS=0" >> $GITHUB_ENV
+              echo "workflow passed"
+              export STATUS=0
+          elif [[ "${{ steps.action-run.outcome }}" == "success" && ${{ matrix.expected-failure }} == "true" ]]; then
+              # normal pass
+              echo "workflow xfailed"
+              export STATUS=0
           else
               # cancelled
               echo "workflow cancelled"
-              echo "STATUS=3" >> $GITHUB_ENV
+              export STATUS=3
           fi
-          exit ${{ env.STATUS }}
+          exit $STATUS

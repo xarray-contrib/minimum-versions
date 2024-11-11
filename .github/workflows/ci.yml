@@ -41,7 +41,7 @@ jobs:
           - ["envs/env1.yaml"]
           - ["envs/env2.yaml"]
           - ["envs/env1.yaml", "envs/env2.yaml"]
-        expected-failure: "false"
+        expected-failure: ["false"]
         include:
           - env-paths: ["envs/failing-env1.yaml"]
             expected-failure: "true"

@@ -20,7 +20,7 @@ runs:
       shell: bash -l {0}
       run: |
         echo "${{ inputs.environment-paths }}"
-        echo "${{ fromJson(input.environment-paths) }}"
+        echo "${{ fromJson(inputs.environment-paths) }}"
     - name: analyze environments
       shell: bash -l {0}
       run: |

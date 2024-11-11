@@ -57,10 +57,9 @@ jobs:
           environment-paths: "${{ toJSON(matrix.env-paths) }}"
       - name: evaluate failures
         if: |
-          always()
-          && (
-            (failure() && ${{ matrix.expected-failure }} == "false")
-            || (success() && ${{ matrix.expected-failure }} == "true")
+          (
+            (failure() && ${{ matrix.expected-failure }} != "true")
+            || (success() && ${{ matrix.expected-failure }} != "false")
           )
         shell: bash -l {0}
         run: exit 1

@@ -16,7 +16,10 @@ runs:
       shell: bash -l {0}
       run: |
         python -m pip install -r requirements.txt
+    - name: input paths
+      run: |
+        echo "${{ fromJson(inputs.env-paths) }}"
     - name: analyze environments
       shell: bash -l {0}
       run: |
-        python minimum_versions.py ${{ fromJson(inputs.env-paths) }}
+        python minimum_versions.py "${{ fromJson(inputs.env-paths) }}"

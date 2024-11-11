@@ -62,18 +62,24 @@ jobs:
         continue-on-error: true
         with:
           environment-paths: "${{ toJSON(matrix.env-paths) }}"
+      - name: setup status
+        shell: bash -l {0}
+        run: |
+          echo "STATUS=0" >> $GITHUB_ENV
       - name: detect unexpected failures
         if: |
           failure() && ${{ matrix.expected-failure }} == "false"
         shell: bash -l {0}
         run: |
+          echo "unexpected failure"
           echo "STATUS=1" >> $GITHUB_ENV
       - name: detect unexpected passes
         if: |
           success() && ${{ matrix.expected-failure }} == "true"
         shell: bash -l {0}
         run: |
-          echo "STATUS=0" >> $GITHUB_ENV
+          echo "unexpected pass"
+          echo "STATUS=2" >> $GITHUB_ENV
       - name: evaluate status
         shell: bash -l {0}
         run: |

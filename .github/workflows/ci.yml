@@ -59,29 +59,28 @@ jobs:
         uses: actions/checkout@v4
       - name: run action
         uses: ./
+        id: action-run
         with:
           environment-paths: "${{ toJSON(matrix.env-paths) }}"
-      - name: setup status
+      - name: detect outcome
         if: always()
         shell: bash -l {0}
         run: |
-          echo "${{ success() }} vs ${{ failure() }}"
-          echo "STATUS=0" >> $GITHUB_ENV
-      - name: detect unexpected failures
-        if: |
-          failure() && ${{ matrix.expected-failure }} == "false"
-        shell: bash -l {0}
-        run: |
-          echo "unexpected failure"
-          echo "STATUS=1" >> $GITHUB_ENV
-      - name: detect unexpected passes
-        if: |
-          success() && ${{ matrix.expected-failure }} == "true"
-        shell: bash -l {0}
-        run: |
-          echo "unexpected pass"
-          echo "STATUS=2" >> $GITHUB_ENV
-      - name: evaluate status
-        shell: bash -l {0}
-        run: |
+          if [[ "${{ steps.action-run.outcome }}" == "success" && ${{ matrix.expected-failure }} == "true" ]]; then
+              # unexpected failure
+              echo "workflow xpassed"
+              echo "STATUS=1" >> $GITHUB_ENV
+          elif [[ "${{ steps.action-run.outcome }}" == "failure" && ${{ matrix.expected-failure }} == "false" ]]; then
+              # unexpected pass
+              echo "workflow failed"
+              echo "STATUS=2" >> $GITHUB_ENV
+          elif [[ "${{ steps.action-run.outcome }}" == "success" ]]; then
+              # normal pass
+              echo "passed"
+              echo "STATUS=0" >> $GITHUB_ENV
+          else
+              # cancelled
+              echo "workflow cancelled"
+              echo "STATUS=3" >> $GITHUB_ENV
+          fi
           exit ${{ env.STATUS }}

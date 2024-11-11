@@ -24,4 +24,4 @@ runs:
     - name: analyze environments
       shell: bash -l {0}
       run: |
-        python minimum_versions.py ${{ fromJSON(inputs.environment-paths) }}
+        python minimum_versions.py ${{ join(fromJSON(inputs.environment-paths), ' ') }}

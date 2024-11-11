@@ -1,0 +1,13 @@
+name: "minimum-dependency-versions"
+description: >-
+  Check that the minimum dependency versions follow `xarray`'s policy.
+inputs:
+  environment-paths:
+    description: >-
+      The paths to the environment files
+    required: True
+outputs: {}
+
+runs:
+  using: "composite"
+  steps: {}

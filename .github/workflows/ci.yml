@@ -48,4 +48,4 @@ jobs:
       - name: run action
         uses: ./
         with:
-          environment-paths: "${{ toJson(matrix.env-paths) }}"
+          environment-paths: "${{ toJSON(matrix.env-paths) }}"

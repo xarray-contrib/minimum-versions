@@ -20,8 +20,8 @@ runs:
       shell: bash -l {0}
       run: |
         echo "${{ inputs.environment-paths }}"
-        echo "${{ fromJson(inputs.environment-paths) }}"
+        echo "${{ fromJSON(inputs.environment-paths) }}"
     - name: analyze environments
       shell: bash -l {0}
       run: |
-        python minimum_versions.py "${{ fromJson(inputs.environment-paths) }}"
+        python minimum_versions.py "${{ fromJSON(inputs.environment-paths) }}"

@@ -65,6 +65,7 @@ jobs:
         if: always()
         shell: bash -l {0}
         run: |
+          echo "${{ success() }} vs ${{ failure() }}"
           echo "STATUS=0" >> $GITHUB_ENV
       - name: detect unexpected failures
         if: |

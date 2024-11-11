@@ -6,7 +6,7 @@ inputs:
     description: >-
       The paths to the environment files
     required: True
-    type: list
+    type: string
 outputs: {}
 
 runs:
@@ -19,4 +19,4 @@ runs:
     - name: analyze environments
       shell: bash -l {0}
       run: |
-        python minimum_versions.py ${{ inputs.env-paths }}
+        python minimum_versions.py ${{ fromJson(inputs.env-paths) }}

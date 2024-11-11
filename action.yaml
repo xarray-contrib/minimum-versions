@@ -22,6 +22,7 @@ runs:
         pwd
         ls -l
         ls -l envs/env1.yaml
+        ls -l envs/
         ls -l ${{ join(fromJSON(inputs.environment-paths), ' ') }}
     - name: analyze environments
       shell: bash -l {0}

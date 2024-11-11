@@ -107,8 +107,8 @@ def parse_environment(text):
     for dep in env["dependencies"]:
         spec, warnings_ = Spec.parse(dep)
 
-        warnings.append(warnings_)
         specs.append(spec)
+        warnings.append(warnings_)
 
     return specs, warnings
 

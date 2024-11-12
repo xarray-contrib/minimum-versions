@@ -63,7 +63,7 @@ class Spec:
         warnings = []
         if ">" in spec_text or "<" in spec_text:
             warnings.append(
-                f"package should be pinned with an exact version: {spec_text!r}"
+                f"package must be pinned with an exact version: {spec_text!r}. Using the version as an exact pin instead."
             )
 
             spec_text = spec_text.replace(">", "").replace("<", "")

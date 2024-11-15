@@ -114,7 +114,7 @@ def parse_environment(text):
 
 
 def is_preview(version):
-    candidates = ["rc", "beta", "alpha"]
+    candidates = {"rc", "b", "a"}
 
     *_, last_segment = version.segments()
     return any(candidate in last_segment for candidate in candidates)

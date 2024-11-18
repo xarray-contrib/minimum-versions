@@ -38,19 +38,22 @@ class Policy:
     default_months: int
     overrides: dict[str, Version] = field(default_factory=dict)
 
-    def minimum_version(self, package_name, releases):
+    def minimum_version(self, today, package_name, releases):
         if (override := self.overrides.get(package_name)) is not None:
-            return override
+            return find_release(releases, version=override)
+
+        suitable_releases = [
+            release for release in releases if is_suitable_release(release)
+        ]
 
         policy_months = self.package_months.get(package_name, self.default_months)
-        today = datetime.date.today()
 
         cutoff_date = today - relativedelta(months=policy_months)
 
         index = bisect.bisect_left(
-            releases, cutoff_date, key=lambda x: x.timestamp.date()
+            suitable_releases, cutoff_date, key=lambda x: x.timestamp.date()
         )
-        return releases[index - 1 if index > 0 else 0]
+        return suitable_releases[index - 1 if index > 0 else 0]
 
 
 @dataclass
@@ -134,6 +137,11 @@ def filter_releases(predicate, releases):
     }
 
 
+def find_release(releases, version):
+    index = bisect.bisect_left(releases, version, key=lambda x: x.version)
+    return releases[index]
+
+
 def deduplicate_releases(package_info):
     def deduplicate(releases):
         return min(releases, key=lambda p: p.timestamp)
@@ -144,9 +152,9 @@ def deduplicate_releases(package_info):
     }
 
 
-def find_policy_versions(policy, releases):
+def find_policy_versions(policy, today, releases):
     return {
-        name: policy.minimum_version(name, package_releases)
+        name: policy.minimum_version(today, name, package_releases)
         for name, package_releases in releases.items()
     }
 
@@ -286,6 +294,7 @@ def main(environment_paths):
     query = gateway.query(channels, platforms, all_packages, recursive=False)
     records = asyncio.run(query)
 
+    today = datetime.date.today()
     package_releases = pipe(
         records,
         concat,
@@ -295,8 +304,7 @@ def main(environment_paths):
     )
     policy_versions = pipe(
         package_releases,
-        curry(filter_releases, is_suitable_release),
-        curry(find_policy_versions, policy),
+        curry(find_policy_versions, policy, today),
     )
     status = compare_versions(environments, policy_versions)
 

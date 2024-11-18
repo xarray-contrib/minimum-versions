@@ -16,3 +16,20 @@ jobs:
       with:
         environment-paths: path/to/env.yaml
 ```
+
+To analyze multiple environments at the same time, pass a multi-line string:
+
+```yaml
+jobs:
+  my-job:
+    ...
+    steps:
+    ...
+
+    - uses: xarray-contrib/minimum-dependency-versions@version
+      with:
+        environment-paths: |
+          path/to/env1.yaml
+          path/to/env2.yaml
+          path/to/env3.yaml
+```

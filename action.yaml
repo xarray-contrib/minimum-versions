@@ -22,5 +22,6 @@ runs:
       env:
         COLUMNS: 120
         FORCE_COLOR: 3
+        INPUT: ${{ inputs.environment-paths }}
       run: |
-        python minimum_versions.py "${{ inputs.environment-paths }}"
+        python minimum_versions.py "$(echo $INPUT)"

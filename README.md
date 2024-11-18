@@ -13,5 +13,5 @@ jobs:
 
     - uses: xarray-contrib/minimum-dependency-versions@version
       with:
-        ...
+        environment-paths: path/to/env.yaml
 ```

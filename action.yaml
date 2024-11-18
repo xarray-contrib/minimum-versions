@@ -23,4 +23,4 @@ runs:
         COLUMNS: 120
         FORCE_COLOR: 3
       run: |
-        python minimum_versions.py ${{ join(inputs.environment-paths, ' ') }}
+        python minimum_versions.py "${{ inputs.environment-paths }}"

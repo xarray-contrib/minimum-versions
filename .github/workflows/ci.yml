@@ -62,7 +62,7 @@ jobs:
         id: action-run
         continue-on-error: true
         with:
-          environment-paths: "${{ toJSON(matrix.env-paths) }}"
+          environment-paths: ${{ matrix.env-paths }}
       - name: detect outcome
         if: always()
         shell: bash -l {0}

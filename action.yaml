@@ -6,7 +6,7 @@ inputs:
     description: >-
       The paths to the environment files
     required: True
-    type: string
+    type: list
 outputs: {}
 
 runs:
@@ -23,4 +23,4 @@ runs:
         COLUMNS: 120
         FORCE_COLOR: 3
       run: |
-        python minimum_versions.py ${{ join(fromJSON(inputs.environment-paths), ' ') }}
+        python minimum_versions.py ${{ join(inputs.environment-paths, ' ') }}

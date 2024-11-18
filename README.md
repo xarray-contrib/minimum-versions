@@ -10,7 +10,8 @@ To use the `minimum-dependency-versions` action in workflows, simply add a new s
 jobs:
   my-job:
     ...
-
+    steps:
+    ...
     - uses: xarray-contrib/minimum-dependency-versions@version
       with:
         environment-paths: path/to/env.yaml

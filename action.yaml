@@ -24,4 +24,4 @@ runs:
         FORCE_COLOR: 3
         INPUT: ${{ inputs.environment-paths }}
       run: |
-        python minimum_versions.py $(echo $INPUT)
+        python ${{ github.action_path }}/minimum_versions.py $(echo $INPUT)
